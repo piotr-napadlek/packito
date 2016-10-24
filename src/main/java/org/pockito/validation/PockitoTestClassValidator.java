@@ -3,7 +3,7 @@ package org.pockito.validation;
 
 import org.pockito.annotations.TestedClass;
 import org.pockito.annotations.TestedPackage;
-import org.pockito.scanner.util.ScannerUtils;
+import org.pockito.testscanner.util.ScannerUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

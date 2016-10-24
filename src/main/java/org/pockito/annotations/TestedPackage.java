@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface TestedPackage {
     String value();
     boolean deepScan() default true;
+    String[] additionalPackages() default "";
+    String[] excludedPackages() default "";
 }

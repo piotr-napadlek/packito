@@ -1,4 +1,6 @@
-package org.pockito.test.a;
+package org.pockito.test.a.b;
+
+import org.pockito.test.a.c.SomeImportantBusinessLogic;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -13,4 +15,9 @@ public class SomeDependantBusinessClass {
         Arrays.sort(chars);
         return new String(chars);
     }
+
+    public String someDependantMethod() {
+        return independentMethod(someImportantBusinessLogic.getMeSomething());
+    }
+
 }
