@@ -55,13 +55,15 @@ public class PockitoDependencyInjector {
                 if (field.get(instance) == null && supplierAssignableClass.isPresent()) {
                     field.set(instance, dependencies.getDependencyProviders().get(supplierAssignableClass.get()).get()); // get get get ! :)
                 }
-                if (isAssignableFromAny(field.getType(), classesInAPackage) && field.get(instance) == null) { // at last we just try to instantiate
-                    field.set(instance, getAssignableClass(field.getType(), classesInAPackage).get().newInstance());
-                    System.out.println("Injected field " + field.getName() + " of type " + field.getType() + " in class " + klass.getName()
-                                               + " as object " + field.get(instance));
+                if (field.get(instance) == null && isAssignableFromAny(field.getType(), dependencies.getInstantiatedClasses().keySet())) {
+                    field.set(instance, dependencies.getInstantiatedClasses().get(
+                            getAssignableClass(field.getType(), dependencies.getInstantiatedClasses().keySet()).get()));
                 }
-                if (field.get(instance) != null) {
-                    injectDependencies(field.get(instance), classesInAPackage, dependencies); // propagate injection
+                if (isAssignableFromAny(field.getType(), classesInAPackage) && field.get(instance) == null) {  // at last we just try to instantiate
+                    Object realInstanceFromPackage = getAssignableClass(field.getType(), classesInAPackage).get().newInstance();
+                    field.set(instance, realInstanceFromPackage);
+                    dependencies.addInstantiatedClass(realInstanceFromPackage);
+                    injectDependencies(realInstanceFromPackage, classesInAPackage, dependencies);
                 }
                 if (!isAssignableFromAny(field.getType(), classesInAPackage) && field.get(instance) == null) {
                     Optional<Class<?>> mockedAssignableClass = getAssignableClass(field.getType(), dependencies.getMockedClasses().keySet());

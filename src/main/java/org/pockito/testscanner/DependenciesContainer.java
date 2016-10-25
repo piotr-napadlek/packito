@@ -1,5 +1,6 @@
 package org.pockito.testscanner;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -9,6 +10,7 @@ public class DependenciesContainer {
     private Map<Class<?>, Object> providedDependencies;
     private Map<Class<?>, Supplier<?>> dependencyProviders;
     private Map<Class<?>, Object> mockedClasses;
+    private Map<Class<?>, Object> instantiatedClasses = new HashMap<>();
 
     public DependenciesContainer() {}
 
@@ -42,5 +44,13 @@ public class DependenciesContainer {
 
     public void setMockedClasses(Map<Class<?>, Object> mockedClasses) {
         this.mockedClasses = mockedClasses;
+    }
+
+    public void addInstantiatedClass(Object object) {
+        this.instantiatedClasses.put(object.getClass(), object);
+    }
+
+    public Map<Class<?>, Object> getInstantiatedClasses() {
+        return instantiatedClasses;
     }
 }
