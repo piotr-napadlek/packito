@@ -19,7 +19,7 @@ public class ScannerUtils {
         Class scannedClass = klass;
         while (!isObject(scannedClass)) {
             klassConsumer.accept(scannedClass);
-            scannedClass = klass.getSuperclass();
+            scannedClass = (scannedClass == klass.getSuperclass()) ? null : klass.getSuperclass();
         }
     }
 
