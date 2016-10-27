@@ -25,29 +25,42 @@ Of course with their dependencies, if inside the tested package, or a mock, if o
 #How again?
     package com.mycompany.app.service.somecomponent;
      
+    import com.mycompany.app.service.othercomponent.ExternalRequiredDependency;
+    import com.mycompany.app.service.othercomponent.ExternalRequiredDependencyImpl;
+    import com.mycompany.app.service.othercomponent.ExternalDependency;
+     
+    import org.junit.Before;
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    import org.mockito.Mockito;
+    import org.packito.annotations.*;
+    import org.packito.runner.PackitoRunner;
+     
+    import java.util.function.Function;
+     
     @RunWith(PackitoRunner.class)
-    @TestedPackage("com.mycompany.app.service.mycomponent") // can be omitted - will scan class package then
+    @TestedPackage("com.mycompany.app.service.mycomponent") // can be omitted - will scan test class package then
     public class SomeComponentTest {
-        
-        @TestedClass (autoInstantiate = true)
+     
+        @TestedClass(autoInstantiate = true)
         private ComponentEndPoint testedObject; // tested class on which we call methods
-        
+     
         @ProvidedDependency
         private ExternalRequiredDependency dependencyWeDoNotWishToMock = new ExternalRequiredDependencyImpl();
-        
+     
         @MockedDependency
         private ExternalDependency dependencyToMock; // declare to be able to make verifications on a mock
-        
+     
         @MockProvider
         private Function<Class<?>, Object> mockProvider = Mockito::mock; // our mock framework of option, 
         // as packito is mocking framework independant
-        
+     
         @Before
         public void setUp() {
             // let's set up our mocks a little
             Mockito.when(dependencyToMock.provideSomeValue(Mockito.any()).thenReturn("There you have!");
         }
-        
+     
         @Test
         public void someComponentTest() {
             // given
@@ -58,7 +71,7 @@ Of course with their dependencies, if inside the tested package, or a mock, if o
             Mockito.verify(dependencyToMock, Mockito.times(1)).provideSomeValue(Mockito.any());
             // further assertions with result ...
         }
-        
+    
     }
  
 #Details
