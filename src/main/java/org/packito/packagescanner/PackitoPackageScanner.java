@@ -6,7 +6,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class PackitoPackageScanner implements PackageScanner{
+
+    /**
+     * @deprecated use PackitoIndependentPackageScanner instead.
+     * @param packageName
+     * @return
+     * @throws IOException
+     */
+    @Deprecated
     @Override
     public List<Class<?>> findAllClassesInAPackage(String packageName) throws IOException {
         return ClassPath.from(this.getClass().getClassLoader())
