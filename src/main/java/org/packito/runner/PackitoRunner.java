@@ -7,6 +7,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.packito.annotations.TestedPackage;
 import org.packito.injector.PackitoDependencyInjector;
+import org.packito.packagescanner.PackageScanner;
 import org.packito.packagescanner.PackitoIndependentPackageScanner;
 import org.packito.testscanner.ClassToTest;
 import org.packito.testscanner.DependenciesContainer;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public class PackitoRunner extends BlockJUnit4ClassRunner {
 
-    ProvidedDependenciesScanner dependenciesScanner = new PackitoProvidedDependenciesScanner();
+    private ProvidedDependenciesScanner dependenciesScanner = new PackitoProvidedDependenciesScanner();
 
     public PackitoRunner(Class<?> testedClass) throws InitializationError {
         super(testedClass);
@@ -39,7 +40,8 @@ public class PackitoRunner extends BlockJUnit4ClassRunner {
         String packageScope = ScannerUtils.findAnnotationInClassHierarchy(target.getClass(), TestedPackage.class).value();
         List<Class<?>> classesInPackage;
         try {
-            classesInPackage = new PackitoIndependentPackageScanner().findAllClassesInAPackage(packageScope);
+            PackageScanner packageScanner = new PackitoIndependentPackageScanner();
+            classesInPackage = packageScanner.findAllClassesInAPackage(packageScope);
         } catch (IOException e) {
             e.printStackTrace();
             throw new PackitoInitializationException("Could not scan the classes in a package " + packageScope);
