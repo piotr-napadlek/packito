@@ -2,19 +2,10 @@
 TDD taken on a package level! 
 
     packito = package + mockito
-#What for?
-Ever felt tired of writing tests that actually only checked if another classes' method was called to achieve some magic threshold of code coverage?
-Ever felt overwhelmed by amount of dependencies you needed to inject just to make some simple assertion without getting NPE?
-Ever felt annoyed of having to adjust JUnit test while the change you'd made had actually no influence on a functionality of an interface you've 
-provided?
-Ever wondered what if we could simply manage which elements of our application will be mocked during tests, and which will be actually real code that we will
- cover with tests?
+# What for?
+Packito allows us to use convenient simple dependency injection in a scope of a package. It temporarily depends on field injection and assumes there is a parameterless constructor available for class insantiation. Then in a test class we can define mocks for all of our dependencies (if there is no mock found then it is mocked automatically - hence the need of `@MockProvider`)
  
- Well, we have a solution
- 
-#How?
-Let's think: what splits our application into smaller parts that we can further logically divide and manage?
-Right.
+# How?
 
 Packages.
 
@@ -22,7 +13,7 @@ We use packages as a limit of our test scope. Everything, that is outside our te
 Everything, that is found inside a package, and is required as dependency in tested class dependency tree - get's instantiated and injected.
 Of course with their dependencies, if inside the tested package, or a mock, if outside. Simple as that.
 
-#How again?
+# How again?
     package com.mycompany.app.service.somecomponent;
      
     import com.mycompany.app.service.othercomponent.ExternalRequiredDependency;
